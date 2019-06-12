@@ -1,3 +1,5 @@
 public class Main{
-    System.out.println("qq, man")
+    Public satatic void main(String[] args){
+        System.out.println("qq, man")
+    }
 }
