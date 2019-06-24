@@ -41,6 +41,7 @@ public class Main {
             inputValue = new BigDecimal(inputString);
         } else {
             System.out.println("\nBye!");
+            System.exit(0);
         }
         return inputValue;
     }
