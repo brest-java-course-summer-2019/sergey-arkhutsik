@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 
     <title>Clients</title>
 </head>
@@ -29,18 +30,33 @@
             </li>
         </ul>
     </nav>
-    <nav id="main-header" class="py-1 mb-3 navbar navbar-expand-sm navbar-light bg-light text-dark">
-        <span class="navbar-brand text-uppercase mr-auto">Devices</span>
-        <ul class="navbar-nav float-right">
-            <li class="nav-item">
+
+    <nav class="navbar bg-light text-dark">
+        <div class="row container-fluid d-flex justify-content-end">
+            <div class="col"><span class="navbar-brand text-uppercase mr-auto ">Devices</span>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                <span class="input-group date" data-provide="datepicker">
+                <input type="text" name="daterange">
+                </span>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-outline-dark">Filter</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col d-flex justify-content-end">
                 <a href="device.html">
                     <button type="button" class="btn btn-primary">
-                        <i class="fa fa-plus"></i>
-                        <span class="d-none d-sm-inline">&nbsp;&nbsp;Add new device</span>
+                        <i class="fa fa-plus"></i><span class="d-none d-sm-inline">&nbsp;&nbsp;Add new device</span>
                     </button>
                 </a>
-        </ul>
+            </div>
+        </div>
     </nav>
+
 </header>
 
 <section id="devices">
@@ -308,6 +324,18 @@
 
 <script src="js/jquery-3.3.1.slim.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script>
+    $(function () {
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'left'
+        }, function (start, end) {
+            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+    });
+</script>
+
 
 </body>
 </html>
