@@ -1,81 +1,96 @@
 package com.epam.brest2019.courses;
 
-import java.io.FileInputStream;
+import com.epam.brest2019.courses.calc.Calculator;
+import com.epam.brest2019.courses.calc.CalculatorImpl;
+import com.epam.brest2019.courses.files.CSVFileReader;
+import com.epam.brest2019.courses.files.FileReader;
+import com.epam.brest2019.courses.menu.CorrectValue;
+import com.epam.brest2019.courses.menu.EnteredValue;
+import com.epam.brest2019.courses.menu.ExitValue;
+import com.epam.brest2019.courses.menu.IncorrectValue;
+import com.epam.brest2019.courses.selector.SelectorFromMap;
+import com.epam.brest2019.courses.selector.ValueSelector;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Properties;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
 
-    private static BigDecimal[] array1;
-    private static BigDecimal pricePerKm;
+    private static final String QUIT_SYMBOL = "q";
 
-    public static void main(String[] args) {
+    private static final String FILE_KG_PRICES = "delivery_cost/resources/price_per_km.csv";
+    private static final String FILE_KM_PRICES = "delivery_cost/resources/price_per_km.csv";
+
+    public static void main(String[] args) throws IOException {
+
+        Main main = new Main();
+        Scanner scanner = new Scanner(System.in);
+
+        FileReader fileReader = new CSVFileReader();
+        Map<Integer, BigDecimal> weightPrices = fileReader.readData(FILE_KG_PRICES);
+        if (weightPrices == null || weightPrices.isEmpty()) {
+            throw new FileNotFoundException("File with prices per kg not found.");
+        }
+
+        Map<Integer, BigDecimal> distancePrices = fileReader.readData(FILE_KM_PRICES);
+        if (distancePrices == null || distancePrices.isEmpty()) {
+            throw new FileNotFoundException("File with prices per km not found.");
+        }
+
+        Calculator calculator = new CalculatorImpl();
+        ValueSelector selector = new SelectorFromMap();
 
         BigDecimal weight;
         BigDecimal distance;
-        BigDecimal pricePerKg = new BigDecimal("30");
+        EnteredValue enteredValue;
+        do {
+            System.out.println("==========================================================");
+            enteredValue = main.receiveValueFromConsole("Enter weight in kg or 'q' for quit", scanner);
+            if (enteredValue.getType() != EnteredValue.Types.EXIT) {
+                weight = ((CorrectValue) enteredValue).getValue();
+                enteredValue = main.receiveValueFromConsole("Enter distance in km or 'q' for quit", scanner);
+                if (enteredValue.getType() != EnteredValue.Types.EXIT) {
+                    distance = ((CorrectValue) enteredValue).getValue();
 
+                    BigDecimal deliveryCost = calculator.calc(weight, distance,
+                            selector.selectValue(weightPrices, weight),
+                            selector.selectValue(distancePrices, distance));
 
-        System.out.println("Enter the weight in kilograms or 'q' for quit: ");
-        weight = getDataScanner();
-        System.out.println("Enter the distance in kilometers or 'q' for quit: ");
-        distance = getDataScanner();
-        readProperties("delivery_cost/src/resources/price_per_km.properties");
-        pricePerKm = compareDistance(distance);
-
-        System.out.println("Value of weight = " + weight);
-        System.out.println("Value of distance = " + distance);
-        System.out.println("Cost for 1 km = " + pricePerKm);
-
-        BigDecimal price = weight.multiply(pricePerKg).add(distance.multiply(pricePerKm));
-        System.out.println("Price = " + price);
+                    System.out.println("Delivery cost: " + deliveryCost);
+                }
+            }
+        } while (enteredValue.getType() != EnteredValue.Types.EXIT);
+        System.out.println("Bye!");
     }
 
-    private static BigDecimal getDataScanner(){
-        BigDecimal inputValue = null;
-        Scanner scanner = new Scanner(System.in);
-        String inputString = scanner.nextLine();
-        if (!inputString.equals("Q")) {
-            inputValue = new BigDecimal(inputString);
-        } else {
-            System.out.println("\nBye!");
-            System.exit(0);
+    private EnteredValue receiveValueFromConsole(String message, Scanner scanner) {
+        EnteredValue enteredValue = new IncorrectValue();
+        while (enteredValue.getType() == EnteredValue.Types.INCORRECT) {
+            System.out.println(message);
+            enteredValue = parseInputValue(scanner.nextLine());
         }
-        return inputValue;
+        return enteredValue;
     }
 
-    private static BigDecimal[] readProperties(String PATH_TO_PROPERTIES){
-        array1 = new BigDecimal[3];
-        FileInputStream fileInputStream;
-        Properties prop = new Properties();
-        try {
-            fileInputStream = new FileInputStream(PATH_TO_PROPERTIES);
-            prop.load(fileInputStream);
-            String less10 = prop.getProperty("less10");
-            String less50 = prop.getProperty("less50");
-            String less100 = prop.getProperty("less100");
-            array1[0] = new BigDecimal(less10);
-            array1[1] = new BigDecimal(less50);
-            array1[2] = new BigDecimal(less100);
-        } catch (IOException e) {
-            System.err.println("ОШИБКА: Файл " + PATH_TO_PROPERTIES + " отсуствует!");
+    private EnteredValue parseInputValue(String inputValue) {
+        EnteredValue result = new ExitValue();
+        if (!inputValue.trim().toLowerCase().equals(QUIT_SYMBOL)) {
+            try {
+                BigDecimal value = new BigDecimal(inputValue);
+                if (value.compareTo(BigDecimal.ZERO) > 0) {
+                    result = new CorrectValue(new BigDecimal(inputValue));
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.format("Incorrect value: %s%n", inputValue);
+                result = new IncorrectValue();
+            }
         }
-        return array1;
-    }
-
-    private static BigDecimal compareDistance(BigDecimal distance){
-        if (distance.compareTo(BigDecimal.valueOf(10)) <= 0){
-            return array1[0];
-        } else  if(distance.compareTo(BigDecimal.valueOf(50)) <= 0){
-            return array1[1];
-        } else  if(distance.compareTo(BigDecimal.valueOf(100)) <= 0) {
-            return array1[2];
-        } else {
-            return BigDecimal.valueOf(50);
-        }
-
+        return result;
     }
 
 }
