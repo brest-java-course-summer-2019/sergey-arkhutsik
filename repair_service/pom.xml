@@ -12,44 +12,43 @@
 
     <modules>
         <module>model</module>
-        <module>web-app</module>
         <module>dao</module>
         <module>test-db</module>
-        <module>service</module>
-        <module>service-api</module>
-        <module>rest-app</module>
     </modules>
 
+    <distributionManagement>
+        <site>
+            <id>${project.artifactId}-site</id>
+            <url>${project.baseUri}</url>
+        </site>
+    </distributionManagement>
 
-        <distributionManagement>
-            <site>
-                <id>${project.artifactId}-site</id>
-                <url>${project.baseUri}</url>
-            </site>
-        </distributionManagement>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
-        <properties>
-            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-            <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-            <maven.compiler.source>1.8</maven.compiler.source>
-            <maven.compiler.target>1.8</maven.compiler.target>
+        <java.showDeprecation>false</java.showDeprecation>
+        <java.showWarnings>false</java.showWarnings>
+        <java.optimize>true</java.optimize>
+        <java.debug>true</java.debug>
 
-            <java.showDeprecation>false</java.showDeprecation>
-            <java.showWarnings>false</java.showWarnings>
-            <java.optimize>true</java.optimize>
-            <java.debug>true</java.debug>
+        <org.springframework.version>5.1.4.RELEASE</org.springframework.version>
+        <junit.version>5.2.0</junit.version>
+        <logback.version>1.2.3</logback.version>
 
-            <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-            <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
-            <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
-            <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-            <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
-            <maven-pmd-plugin.version>3.12.0</maven-pmd-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
+        <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
+        <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
+        <maven-site-plugin.vesrion>3.7.1</maven-site-plugin.vesrion>
+        <maven-pmd-plugin.vesrion>3.12.0</maven-pmd-plugin.vesrion>
 
-            <checkstyle.version>8.22</checkstyle.version>
-            <jacoco.version>0.8.2</jacoco.version>
-            <jacoco.bundle.coveredratio.minimum>65%</jacoco.bundle.coveredratio.minimum>
-        </properties>
+        <checkstyle.version>8.22</checkstyle.version>
+        <jacoco.version>0.8.2</jacoco.version>
+        <jacoco.bundle.coveredratio.minimum>65%</jacoco.bundle.coveredratio.minimum>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -190,7 +189,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>${maven-pmd-plugin.version}</version>
+                    <version>${maven-pmd-plugin.vesrion}</version>
                 </plugin>
 
                 <plugin>
@@ -202,7 +201,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>${maven-site-plugin.version}</version>
+                    <version>${maven-site-plugin.vesrion}</version>
                 </plugin>
 
                 <plugin>
