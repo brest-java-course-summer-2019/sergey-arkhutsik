@@ -18,13 +18,11 @@
         <dependency>
             <groupId>com.epam.brest.summer.cources2019</groupId>
             <artifactId>model</artifactId>
-            <version>${parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.epam.brest.summer.cources2019</groupId>
             <artifactId>test-db</artifactId>
-            <version>${parent.version}</version>
         </dependency>
 
         <dependency>
