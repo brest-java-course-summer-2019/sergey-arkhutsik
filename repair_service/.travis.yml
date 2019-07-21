@@ -1,7 +1,0 @@
-language: java
-dist: trusty
-jdk:
-  - openjdk8
-before_script: cd repair_service/
-script:
-  - mvn clean test coveralls:report
