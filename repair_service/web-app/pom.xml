@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>web-app</artifactId>
-
+    <packaging>war</packaging>
     <name>Repair Service WEB-APP</name>
 
     <parent>
