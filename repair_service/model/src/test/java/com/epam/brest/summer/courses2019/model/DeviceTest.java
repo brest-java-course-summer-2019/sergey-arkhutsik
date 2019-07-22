@@ -5,7 +5,6 @@ import org.junit.Test;
 
 public class DeviceTest {
     Device device = new Device();
-    Client client = new Client();
 
     @Test
     public void getDeviceId(){
@@ -17,12 +16,6 @@ public class DeviceTest {
     public void getDeviceModel(){
         device.setDeviceModel("MacBook Pro");
         Assert.assertTrue(device.getDeviceModel().equals("MacBook Pro"));
-    }
-
-    @Test
-    public void getClientId(){
-        client.setClientId(11);
-        Assert.assertTrue(device.getClientId().equals(11));
     }
 
 }
