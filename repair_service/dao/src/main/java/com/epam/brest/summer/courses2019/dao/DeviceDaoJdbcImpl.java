@@ -1,4 +1,5 @@
-package com.epam.brest.summer.courses2019.dao;
+
+package com.epam.brest.summer.courses2019;
 
 import com.epam.brest.summer.courses2019.model.Device;
 import org.springframework.dao.support.DataAccessUtils;
@@ -55,10 +56,23 @@ public class DeviceDaoJdbcImpl implements DeviceDao{
         namedParameterJdbcTemplate.update(ADD_DEVICE, parameters, generatedKeyHolder);
         device.setDeviceId(generatedKeyHolder.getKey().intValue());
         return device;
+
+package com.epam.brest.summer.courses2019;
+
+import com.epam.brest.summer.courses2019.model.Device;
+import java.util.List;
+
+public class DeviceDaoJdbcImpl implements DeviceDao{
+
+       @Override
+    public Device add(Device device) {
+        return null;
+
     }
 
     @Override
     public void update(Device device) {
+
         Optional.of(namedParameterJdbcTemplate.update(UPDATE, new BeanPropertySqlParameterSource(device)))
                 .filter(this::successfullyUpdated)
                 .orElseThrow(() -> new RuntimeException("Failed to update device in DB"));
@@ -99,6 +113,19 @@ public class DeviceDaoJdbcImpl implements DeviceDao{
             device.setDeviceModel(resultSet.getString("device_name"));
             return device;
         }
+
+
+    }
+
+    @Override
+    public void delete(Integer deviceID) {
+
+    }
+
+    @Override
+    public List<Device> findAll() {
+        return null;
+
     }
 
 }
