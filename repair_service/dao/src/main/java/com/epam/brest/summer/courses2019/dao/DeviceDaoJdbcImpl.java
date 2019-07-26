@@ -116,16 +116,3 @@ public class DeviceDaoJdbcImpl implements DeviceDao{
 
 
     }
-
-    @Override
-    public void delete(Integer deviceID) {
-
-    }
-
-    @Override
-    public List<Device> findAll() {
-        return null;
-
-    }
-
-}
