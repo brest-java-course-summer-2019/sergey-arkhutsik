@@ -1,14 +1,11 @@
 package com.epam.brest.summer.courses2019;
 
 import com.epam.brest.summer.courses2019.model.Device;
-
 import java.util.List;
-
 
 public class DeviceDaoJdbcImpl implements DeviceDao{
 
-
-    @Override
+       @Override
     public Device add(Device device) {
         return null;
     }
