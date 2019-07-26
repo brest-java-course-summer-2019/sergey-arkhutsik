@@ -1,4 +1,4 @@
-package com.epam.brest.summer.courses2019;
+package com.epam.brest.summer.courses2019.dao;
 
 import com.epam.brest.summer.courses2019.model.Device;
 
