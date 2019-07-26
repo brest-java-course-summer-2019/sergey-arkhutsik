@@ -1,7 +1,6 @@
 package com.epam.brest.summer.courses2019;
 
 import com.epam.brest.summer.courses2019.model.Device;
-
 import java.util.List;
 
 public interface DeviceDao {
