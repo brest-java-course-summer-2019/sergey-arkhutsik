@@ -16,6 +16,7 @@
         <module>dao</module>
         <module>test-db</module>
         <module>web-app</module>
+        <module>service</module>
     </modules>
 
     <distributionManagement>
@@ -28,6 +29,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.version>1.0-SNAPSHOT</project.version>
         <java.showDeprecation>false</java.showDeprecation>
         <java.showWarnings>false</java.showWarnings>
         <java.optimize>true</java.optimize>
