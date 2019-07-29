@@ -5,7 +5,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>test-db</artifactId>
-
     <name>Repair Service Test-DB</name>
 
     <parent>
