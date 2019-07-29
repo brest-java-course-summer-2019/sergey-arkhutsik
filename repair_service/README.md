@@ -12,7 +12,7 @@ Building
      
  Install:
  
-     mvn clean instal
+     mvn clean install
      
  Run in a jetty server:
  
