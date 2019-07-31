@@ -1,14 +1,14 @@
 package com.epam.brest.summer.courses2019.model;
 
-import java.util.Date;
-
 public class Device {
 
     private Integer deviceId;
 
-    private Date deviceDate;
+    private String deviceDate;
 
     private String deviceModel;
+
+    private String deviceDescription;
 
     private Integer clientId;
 
@@ -20,11 +20,11 @@ public class Device {
         this.deviceId = deviceId;
     }
 
-    public Date getDeviceDate() {
+    public String getDeviceDate() {
         return deviceDate;
     }
 
-    public void setDeviceDate(Date deviceDate) {
+    public void setDeviceDate(String deviceDate) {
         this.deviceDate = deviceDate;
     }
 
@@ -34,6 +34,14 @@ public class Device {
 
     public void setDeviceModel(String deviceModel) {
         this.deviceModel = deviceModel;
+    }
+
+    public String getDeviceDescription() {
+        return deviceDescription;
+    }
+
+    public void setDeviceDescription(String deviceDescription) {
+        this.deviceDescription = deviceDescription;
     }
 
     public Integer getClientId() {
@@ -48,8 +56,9 @@ public class Device {
     public String toString() {
         return "Device{" +
                 "deviceId=" + deviceId +
-                ", deviceDate=" + deviceDate +
+                ", deviceDate='" + deviceDate + '\'' +
                 ", deviceModel='" + deviceModel + '\'' +
+                ", deviceDescription='" + deviceDescription + '\'' +
                 ", clientId=" + clientId +
                 '}';
     }

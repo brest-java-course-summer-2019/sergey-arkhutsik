@@ -2,6 +2,7 @@ package com.epam.brest.summer.courses2019.model;
 
 import org.junit.Assert;
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class ClientTest {
     Client client = new Client();
@@ -16,5 +17,14 @@ public class ClientTest {
     public void getClientName(){
         client.setClientName("Vovan");
         Assert.assertTrue(client.getClientName().equals("Vovan"));
+    }
+
+
+    @Test
+    public void testToString() {
+        client.setClientId(21);
+        client.setClientName("Test ClientName");
+        String expectedResponseClient = "Client{clientId=21, clientName='Test ClientName'}";
+        assertEquals(expectedResponseClient, client.toString());
     }
 }

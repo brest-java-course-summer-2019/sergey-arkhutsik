@@ -11,6 +11,6 @@ CREATE TABLE device (
 device_id INT NOT NULL AUTO_INCREMENT,
 device_model VARCHAR(255) NOT NULL UNIQUE,
 device_date DATE NOT NULL,
-we VARCHAR(255) NOT NULL,
+device_description VARCHAR(255) NOT NULL,
 PRIMARY KEY (device_id)
 );
