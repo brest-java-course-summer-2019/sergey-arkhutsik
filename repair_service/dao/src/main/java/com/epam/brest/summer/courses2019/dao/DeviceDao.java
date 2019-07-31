@@ -17,12 +17,8 @@ public interface DeviceDao {
 
     List<Device> findAll();
 
-    /**
-     * Get Department By Id.
-     *
-     * @param deviceId departmentId
-     * @return Department
-     */
+    List<Device> findByDeviceId(Integer deviceId);
+
     Optional<Device> findById(Integer deviceId);
 
 }

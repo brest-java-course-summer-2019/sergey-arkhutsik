@@ -12,5 +12,9 @@ device_id INT NOT NULL AUTO_INCREMENT,
 device_model VARCHAR(255) NOT NULL UNIQUE,
 device_date DATE NOT NULL,
 device_description VARCHAR(255) NOT NULL,
-PRIMARY KEY (device_id)
+client_id INT NOT NULL,
+PRIMARY KEY (device_id),
+    CONSTRAINT device_to_client_foreign_key
+    FOREIGN KEY (client_id)
+    REFERENCES client (client_id)
 );

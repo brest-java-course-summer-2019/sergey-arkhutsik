@@ -18,29 +18,34 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-/**
- *  Device DAO Interface implementation.
- */
 public class DeviceDaoJdbcImpl implements DeviceDao{
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final static String SELECT_ALL =
-            "select d.device_id, d.device_model from device d order by 2";
+            "select device_id, device_model, device_description, device_date,  " +
+                    "client_id from device d order by device_id";
 
     private static final String FIND_BY_ID =
-            "select device_id, device_model from device where device_id = :deviceId";
+            "select device_id, device_model, device_description, device_date,  " +
+                    "client_id from device where device_id = :deviceId";
+
+    private static final String FIND_BY_CLIENT_ID =
+            "SELECT device_id, device_model, device_description, device_date,  " +
+                    "client_id from device where client_id = :clientId";
 
     private final static String ADD_DEVICE =
-            "insert into device (device_model) values (:deviceModel)";
+            "insert into device (device_model, device_description, device_date, " +
+                    "client_id) values (:deviceModel, :deviceDescription, :deviceDate, :clientId)";
 
-    private static final String UPDATE =
-            "update device set device_model = :deviceModel where device_id = :deviceId";
+    private static final String UPDATE_DEVICE =
+            "update device set device_model = :deviceModel, device_description = :deviceDescription, device_date = :deviceDate, client_id = :clientId where device_id = :deviceId";
 
-    private static final String DELETE =
+    private static final String DELETE_DEVICE =
             "delete from device where device_id = :deviceId";
 
     private static final String DEVICE_ID = "deviceId";
+    private static final String CLIENT_ID = "clientId";
 
     public DeviceDaoJdbcImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -50,7 +55,9 @@ public class DeviceDaoJdbcImpl implements DeviceDao{
     public Device add(Device device) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("deviceModel", device.getDeviceModel());
-
+        parameters.addValue("deviceDescription", device.getDeviceDescription());
+        parameters.addValue("deviceDate", device.getDeviceDate());
+        parameters.addValue("clientId", device.getClientId());
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_DEVICE, parameters, generatedKeyHolder);
         device.setDeviceId(generatedKeyHolder.getKey().intValue());
@@ -59,9 +66,9 @@ public class DeviceDaoJdbcImpl implements DeviceDao{
 
     @Override
     public void update(Device device) {
-        Optional.of(namedParameterJdbcTemplate.update(UPDATE, new BeanPropertySqlParameterSource(device)))
+        Optional.of(namedParameterJdbcTemplate.update(UPDATE_DEVICE, new BeanPropertySqlParameterSource(device)))
                 .filter(this::successfullyUpdated)
-                .orElseThrow(() -> new RuntimeException("Failed to update device in DB"));
+                .orElseThrow(() -> new RuntimeException("Error updaring device in DB"));
     }
 
     private boolean successfullyUpdated(int numRowsUpdated) {
@@ -72,15 +79,23 @@ public class DeviceDaoJdbcImpl implements DeviceDao{
     public void delete(Integer deviceId) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue(DEVICE_ID, deviceId);
-        Optional.of(namedParameterJdbcTemplate.update(DELETE, mapSqlParameterSource))
+        Optional.of(namedParameterJdbcTemplate.update(DELETE_DEVICE, mapSqlParameterSource))
                 .filter(this::successfullyUpdated)
-                .orElseThrow(() -> new RuntimeException("Failed to delete device from DB"));
+                .orElseThrow(() -> new RuntimeException("Error deleting device from DB"));
     }
 
     @Override
     public List<Device> findAll() {
         List<Device> devices = namedParameterJdbcTemplate.query(SELECT_ALL, new DeviceRowMapper());
         return devices;
+    }
+
+    @Override
+    public List<Device> findByDeviceId(Integer clientId) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource(CLIENT_ID, clientId);
+        List<Device> results = namedParameterJdbcTemplate.query(FIND_BY_CLIENT_ID, namedParameters,
+                BeanPropertyRowMapper.newInstance(Device.class));
+        return results;
     }
 
     @Override
