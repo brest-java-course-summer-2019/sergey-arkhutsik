@@ -1,5 +1,7 @@
 package com.epam.brest.summer.courses2019.model;
 
+import java.time.LocalDate;
+
 public class Device {
 
     private Integer deviceId;
@@ -11,6 +13,13 @@ public class Device {
     private String deviceDescription;
 
     private Integer clientId;
+
+    public Device(int i, String deviceModel1, String needRepair1, LocalDate deviceDate, int i1) {
+    }
+
+    public Device() {
+
+    }
 
     public Integer getDeviceId() {
         return deviceId;
@@ -62,4 +71,5 @@ public class Device {
                 ", clientId=" + clientId +
                 '}';
     }
+
 }
