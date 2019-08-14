@@ -6,7 +6,7 @@ public class Device {
 
     private Integer deviceId;
 
-    private String deviceDate;
+    private LocalDate deviceDate;
 
     private String deviceModel;
 
@@ -29,11 +29,11 @@ public class Device {
         this.deviceId = deviceId;
     }
 
-    public String getDeviceDate() {
+    public LocalDate getDeviceDate() {
         return deviceDate;
     }
 
-    public void setDeviceDate(String deviceDate) {
+    public void setDeviceDate(LocalDate deviceDate) {
         this.deviceDate = deviceDate;
     }
 
