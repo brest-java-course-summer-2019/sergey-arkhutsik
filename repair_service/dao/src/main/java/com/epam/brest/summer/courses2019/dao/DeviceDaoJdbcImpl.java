@@ -148,7 +148,6 @@ public class DeviceDaoJdbcImpl implements DeviceDao {
             device.setDeviceId(resultSet.getInt("device_id"));
             device.setDeviceName(resultSet.getString("device_name"));
             device.setParentId(resultSet.getInt("parent_id"));
-            device.setDeviceDate(resultSet.getDate("device_date"));
             device.setDeviceDescription(resultSet.getNString("device_description"));
             return device;
         }
