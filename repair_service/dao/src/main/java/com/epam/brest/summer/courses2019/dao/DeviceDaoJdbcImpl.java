@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -67,6 +68,11 @@ public class DeviceDaoJdbcImpl implements DeviceDao {
     @Value("${device.delete}")
     private String deleteSql;
 
+    /**
+     * SQL query for fiter devices by date.
+     */
+    @Value("${device.filter}")
+    private String filterSql;
 
     /**
      * Column deviceId in device table DB.
@@ -84,9 +90,24 @@ public class DeviceDaoJdbcImpl implements DeviceDao {
     private static final String PARENT_ID = "parentId";
 
     /**
+     * Column deviceDate in device table DB.
+     */
+    private static final String DEVICE_DATE = "deviceDate";
+
+    /**
      * Column deviceDescription in device table DB.
      */
     private static final String DEVICE_DESCRIPTION = "deviceDescription";
+
+    /**
+     * fromDate for SQL query.
+     */
+    private static final String FROM_DATE = "fromDate";
+
+    /**
+     * toDate for SQL query.
+     */
+    private static final String TO_DATE = "toDate";
 
     public DeviceDaoJdbcImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -98,6 +119,7 @@ public class DeviceDaoJdbcImpl implements DeviceDao {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue(DEVICE_NAME, device.getDeviceName());
         parameters.addValue(PARENT_ID, device.getParentId());
+        parameters.addValue(DEVICE_DATE, device.getDeviceDate());
         parameters.addValue(DEVICE_DESCRIPTION, device.getDeviceDescription());
 
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
@@ -148,8 +170,18 @@ public class DeviceDaoJdbcImpl implements DeviceDao {
             device.setDeviceId(resultSet.getInt("device_id"));
             device.setDeviceName(resultSet.getString("device_name"));
             device.setParentId(resultSet.getInt("parent_id"));
+            device.setDeviceDate(resultSet.getDate("device_date"));
             device.setDeviceDescription(resultSet.getNString("device_description"));
             return device;
         }
+    }
+
+    @Override
+    public final List<Device> filterDeviceByDate(Date fromDate, Date toDate) {
+        LOGGER.debug("filterDeviceByDate({}, {})", fromDate, toDate);
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(FROM_DATE, fromDate).addValue(TO_DATE, toDate);
+        List<Device> devices = namedParameterJdbcTemplate.query(filterSql, namedParameters, new DeviceRowMapper());
+        LOGGER.debug("filteredDevices({})", devices);
+        return devices;
     }
 }

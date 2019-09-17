@@ -2,6 +2,7 @@ package com.epam.brest.summer.courses2019.dao;
 
 import com.epam.brest.summer.courses2019.model.Device;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,4 +48,11 @@ public interface DeviceDao {
      */
     void delete(Integer deviceId);
 
+    /**
+     * Filter devices by dates.
+     * @param fromDate - start date.
+     * @param toDate - end date.
+     * @return collection of devices.
+     */
+    List<Device> filterDeviceByDate(Date fromDate, Date toDate);
 }
