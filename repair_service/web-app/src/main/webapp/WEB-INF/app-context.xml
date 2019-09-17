@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/beans
@@ -23,12 +24,54 @@
 
     <context:property-placeholder location="classpath:application.properties"/>
 
+    <!--    <import resource="classpath*:test-db.xml"/>-->
+
+    <!--    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">-->
+    <!--        <constructor-arg name="dataSource" ref="dataSource"/>-->
+    <!--    </bean>-->
+
+    <bean id="clienService" class="com.epam.brest.summer.courses2019.web_app.consumers.ClientRestConsumer">
+        <constructor-arg index="0" value="${protocol}://${host}:${port}/${point.clients}"/>
+        <constructor-arg index="1" ref="restTemplate"/>
+    </bean>
+
+    <bean id="deviceService" class="com.epam.brest.summer.courses2019.web_app.consumers.DeviceRestConsumer">
+        <constructor-arg index="0" value="${protocol}://${host}:${port}/${point.devices}"/>
+        <constructor-arg index="1" ref="restTemplate"/>
+    </bean>
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/*" />
+            <ref bean="localeChangeInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <property name="paramName" value="lang"/>
+    </bean>
+
     <!-- Thymeleaf Template Resolver -->
     <bean id="templateResolver"
           class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
         <property name="prefix" value="/WEB-INF/templates/" />
         <property name="suffix" value=".html" />
         <property name="templateMode" value="HTML" />
+        <!-- Template cache is true by default. Set to false if you want             -->
+        <!-- templates to be automatically updated when modified.                    -->
+        <property name="cacheable" value="false" />
+    </bean>
+
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="en" />
     </bean>
 
     <!-- Thymeleaf Template Engine (Spring5-specific version) -->
@@ -45,6 +88,12 @@
     <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
         <property name="templateEngine" ref="templateEngine" />
         <property name="characterEncoding" value="UTF-8" />
+    </bean>
+
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+          p:basename="/WEB-INF/messages">
+        <property name="defaultEncoding" value="UTF-8" />
     </bean>
 
 </beans>

@@ -2,8 +2,7 @@ package com.epam.brest.summer.courses2019.model;
 
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertTrue;
-
+import static org.junit.Assert.assertTrue;
 
 public class DeviceTest {
 

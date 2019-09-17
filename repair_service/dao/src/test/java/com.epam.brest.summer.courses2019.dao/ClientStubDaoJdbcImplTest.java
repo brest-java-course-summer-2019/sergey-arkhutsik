@@ -14,7 +14,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:test-dao.xml"})
+@ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:dao-test.xml"})
 @Rollback
 public class ClientStubDaoJdbcImplTest {
 

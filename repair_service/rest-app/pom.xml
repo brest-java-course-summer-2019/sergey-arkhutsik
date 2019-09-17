@@ -2,11 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Repair Service Rest server</name>
+
     <artifactId>rest-app</artifactId>
-    <name>Repair Service Rest-APP</name>
-    <version>1.0-SNAPSHOT</version>
+
     <packaging>war</packaging>
 
     <parent>
@@ -19,8 +21,9 @@
         <dependency>
             <groupId>com.epam.brest.summer.courses2019</groupId>
             <artifactId>service</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -74,6 +77,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>4.0.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -85,7 +94,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
                     <httpConnector>
-                        <port>8088</port>
+                        <port>8099</port>
                     </httpConnector>
                 </configuration>
             </plugin>

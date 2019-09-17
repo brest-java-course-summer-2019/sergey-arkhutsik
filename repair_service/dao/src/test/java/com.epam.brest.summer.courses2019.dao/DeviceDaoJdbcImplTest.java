@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:test-dao.xml"})
+@ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:dao-test.xml"})
 @Rollback
 public class DeviceDaoJdbcImplTest {
 
