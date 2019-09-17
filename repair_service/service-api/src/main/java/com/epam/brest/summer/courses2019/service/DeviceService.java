@@ -2,6 +2,8 @@ package com.epam.brest.summer.courses2019.service;
 
 import com.epam.brest.summer.courses2019.model.Device;
 
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,4 +46,11 @@ public interface DeviceService {
      * @param device device
      */
     Device addDevice(Device device);
+
+    /**
+     * Get devices by date.
+     *
+     * @return list of all devices
+     */
+    List<Device> filterDeviceByDate(Date fromDate,Date toDate);
 }

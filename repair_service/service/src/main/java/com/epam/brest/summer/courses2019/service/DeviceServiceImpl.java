@@ -4,6 +4,7 @@ import com.epam.brest.summer.courses2019.dao.DeviceDao;
 
 import com.epam.brest.summer.courses2019.model.Device;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -55,5 +56,11 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public Device addDevice(Device device) {
         return deviceDao.addDevice(device);
+    }
+
+    @Override
+    public List<Device> filterDeviceByDate(Date fromDate, Date toDate) {
+        LOGGER.debug("filterDeviceByDate({}, {})", fromDate, toDate);
+        return deviceDao.filterDeviceByDate(fromDate, toDate);
     }
 }
