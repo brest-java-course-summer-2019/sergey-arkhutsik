@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ClientDaoJdbcImpl implements ClientDao{
+public class ClientDaoJdbcImpl implements ClientDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

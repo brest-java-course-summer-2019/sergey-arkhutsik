@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class DeviceDaoJdbcImpl implements DeviceDao{
+public class DeviceDaoJdbcImpl implements DeviceDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -54,10 +54,10 @@ public class DeviceDaoJdbcImpl implements DeviceDao{
     @Override
     public Device add(Device device) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("deviceModel", device.getDeviceModel());
+        parameters.addValue("deviceModel", device.getDeviceName());
         parameters.addValue("deviceDescription", device.getDeviceDescription());
         parameters.addValue("deviceDate", device.getDeviceDate());
-        parameters.addValue("clientId", device.getClientId());
+        parameters.addValue("clientId", device.getParentId());
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_DEVICE, parameters, generatedKeyHolder);
         device.setDeviceId(generatedKeyHolder.getKey().intValue());
@@ -111,7 +111,7 @@ public class DeviceDaoJdbcImpl implements DeviceDao{
         public Device mapRow(ResultSet resultSet, int i) throws SQLException {
             Device device = new Device();
             device.setDeviceId(resultSet.getInt("device_id"));
-            device.setDeviceModel(resultSet.getString("device_name"));
+            device.setDeviceName(resultSet.getString("device_name"));
             return device;
         }
     }
