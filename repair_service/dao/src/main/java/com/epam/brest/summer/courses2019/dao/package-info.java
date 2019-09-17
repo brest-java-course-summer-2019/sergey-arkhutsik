@@ -1,4 +1,4 @@
 /**
- * Contains Human Resources DAO classes.
+ * Contains DAO classes.
  */
 package com.epam.brest.summer.courses2019.dao;

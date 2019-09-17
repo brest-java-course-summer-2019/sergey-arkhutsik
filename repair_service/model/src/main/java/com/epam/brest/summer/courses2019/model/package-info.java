@@ -1,4 +1,4 @@
 /**
- * Contains Human Resources model classes.
+ * Contains model classes.
  */
 package com.epam.brest.summer.courses2019.model;
