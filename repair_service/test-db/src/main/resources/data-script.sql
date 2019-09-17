@@ -1,6 +1,9 @@
-INSERT INTO client (client_id, client_name) VALUES (1, 'Test Client 1');
-INSERT INTO client (client_id, client_name) VALUES (2, 'Test Client 2');
-INSERT INTO client (client_id, client_name) VALUES (3, 'Test Client 3');
-INSERT INTO device (device_id, device_model, device_date, device_description, client_id) VALUES (1, 'Device1', '2019-07-12', 'verydamaged1', 1);
-INSERT INTO device (device_id, device_model, device_date, device_description, client_id) VALUES (2, 'Device2', '2019-07-13', 'verydamaged2', 1);
-INSERT INTO device (device_id, device_model, device_date, device_description, client_id) VALUES (3, 'Device3', '2019-07-14', 'verydamaged3', 2);
+INSERT INTO client (client_id, client_name) VALUES (1, 'Иванов Иван Иванович');
+INSERT INTO client (client_id, client_name) VALUES (2, 'Петров Петр Петрович');
+INSERT INTO client (client_id, client_name) VALUES (3, 'Сидоров Петр Иванович');
+
+INSERT INTO device (device_id, device_name, parent_id, device_description) VALUES (1, 'Ipad Air1', 1, 'damaged by water');
+INSERT INTO device (device_id, device_name, parent_id, device_description) VALUES (2, 'Ipad Air2', 1, 'broken display');
+INSERT INTO device (device_id, device_name, parent_id, device_description) VALUES (3, 'Ipad Air3', 2, 'not charging');
+INSERT INTO device (device_id, device_name, parent_id, device_description) VALUES (4, 'Ipad Air4', 2, 'crushed by tank');
+INSERT INTO device (device_id, device_name, parent_id, device_description) VALUES (5, 'Ipad Air5', 2, 'battery runs out quickly');
