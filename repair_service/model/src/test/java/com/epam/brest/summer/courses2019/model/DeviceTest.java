@@ -1,38 +1,41 @@
 package com.epam.brest.summer.courses2019.model;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import java.time.LocalDate;
+import static junit.framework.TestCase.assertTrue;
 
-import static org.junit.Assert.assertEquals;
 
 public class DeviceTest {
+
+    private static final Integer DEVICE_ID = 1;
+    private static final String DEVICE_NAME = "deviceName";
+    private static final String DEVICE_DESCRIPTION = "deviceDescription";
+    private static final Integer PARENT_ID = 1;
+
     Device device = new Device();
 
     @Test
-    public void getDeviceId(){
-        device.setDeviceId(99);
-        Assert.assertTrue(device.getDeviceId().equals(99));
+    public void getDeviceId() {
+        device.setDeviceId(DEVICE_ID);
+        assertTrue(device.getDeviceId().equals(DEVICE_ID));
     }
 
     @Test
-    public void getDeviceModel(){
-        device.setDeviceModel("MacBook Pro");
-        Assert.assertTrue(device.getDeviceModel().equals("MacBook Pro"));
+    public void getDeviceName() {
+        device.setDeviceName(DEVICE_NAME);
+        assertTrue(device.getDeviceName().equals(DEVICE_NAME));
     }
 
     @Test
-    public void testToString() {
-        LocalDate deviceDate = LocalDate.of(2019, 07, 13);
-        device.setDeviceId(21);
-        device.setDeviceDate(deviceDate);
-        device.setDeviceModel("DeviceModel");
-        device.setDeviceDescription("DestroyedLCD1");
-        device.setClientId(22);
-        String expectedResponseDevice = "Device{deviceId=21, deviceDate='2019-07-13', deviceModel='DeviceModel', " +
-                "deviceDescription='DestroyedLCD1', clientId=22}";
-        assertEquals(expectedResponseDevice, device.toString());
+    public void getParentId() {
+        device.setParentId(PARENT_ID);
+        assertTrue(device.getParentId().equals(PARENT_ID));
+    }
+
+    @Test
+    public void getDeviceDescription() {
+        device.setDeviceDescription(DEVICE_DESCRIPTION);
+        assertTrue(device.getDeviceDescription().equals(DEVICE_DESCRIPTION));
     }
 
 }
