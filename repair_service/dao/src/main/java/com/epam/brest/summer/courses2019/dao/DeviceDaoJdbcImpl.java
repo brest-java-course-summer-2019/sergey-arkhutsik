@@ -1,6 +1,8 @@
 package com.epam.brest.summer.courses2019.dao;
 
 import com.epam.brest.summer.courses2019.model.Device;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,59 +18,100 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * Device DAO Interface implementation.
+ */
 @Component
 public class DeviceDaoJdbcImpl implements DeviceDao {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceDaoJdbcImpl.class);
+
+    /**
+     * NamedParameterJdbcTemplate.
+     */
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private final static String SELECT_ALL =
-            "select device_id, device_model, device_description, device_date,  " +
-                    "client_id from device d order by device_id";
+    /**
+     * SQL query for select all devices.
+     */
+    @Value("${device.findAll}")
+    private String findAllSql;
 
-    private static final String FIND_BY_ID =
-            "select device_id, device_model, device_description, device_date,  " +
-                    "client_id from device where device_id = :deviceId";
+    /**
+     * SQL query for select device by id.
+     */
+    @Value("${device.findById}")
+    private String findByIdSql;
 
-    private static final String FIND_BY_CLIENT_ID =
-            "SELECT device_id, device_model, device_description, device_date,  " +
-                    "client_id from device where client_id = :clientId";
+    /**
+     * SQL query for insert device.
+     */
+    @Value("${device.insert}")
+    private String insertSql;
 
-    private final static String ADD_DEVICE =
-            "insert into device (device_model, device_description, device_date, " +
-                    "client_id) values (:deviceModel, :deviceDescription, :deviceDate, :clientId)";
+    /**
+     * SQL query for update device.
+     */
+    @Value("${device.update}")
+    private String updateSql;
 
-    private static final String UPDATE_DEVICE =
-            "update device set device_model = :deviceModel, device_description = :deviceDescription, device_date = :deviceDate, client_id = :clientId where device_id = :deviceId";
+    /**
+     * SQL query for delete device.
+     */
+    @Value("${device.delete}")
+    private String deleteSql;
 
-    private static final String DELETE_DEVICE =
-            "delete from device where device_id = :deviceId";
 
+    /**
+     * Column deviceId in device table DB.
+     */
     private static final String DEVICE_ID = "deviceId";
-    private static final String CLIENT_ID = "clientId";
+
+    /**
+     * Column deviceName in device table DB.
+     */
+    private static final String DEVICE_NAME = "deviceName";
+
+    /**
+     * Column clientId in device table DB.
+     */
+    private static final String PARENT_ID = "parentId";
+
+    /**
+     * Column deviceDescription in device table DB.
+     */
+    private static final String DEVICE_DESCRIPTION = "deviceDescription";
 
     public DeviceDaoJdbcImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
-    public Device add(Device device) {
+    public final Device addDevice(final Device device) {
+        LOGGER.debug("addDevice({})", device);
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        parameters.addValue("deviceModel", device.getDeviceName());
-        parameters.addValue("deviceDescription", device.getDeviceDescription());
-        parameters.addValue("deviceDate", device.getDeviceDate());
-        parameters.addValue("clientId", device.getParentId());
+        parameters.addValue(DEVICE_NAME, device.getDeviceName());
+        parameters.addValue(PARENT_ID, device.getParentId());
+        parameters.addValue(DEVICE_DESCRIPTION, device.getDeviceDescription());
+
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(ADD_DEVICE, parameters, generatedKeyHolder);
+        namedParameterJdbcTemplate.update(insertSql, parameters, generatedKeyHolder);
         device.setDeviceId(generatedKeyHolder.getKey().intValue());
         return device;
     }
 
     @Override
     public void update(Device device) {
-        Optional.of(namedParameterJdbcTemplate.update(UPDATE_DEVICE, new BeanPropertySqlParameterSource(device)))
-                .filter(this::successfullyUpdated)
-                .orElseThrow(() -> new RuntimeException("Error updaring device in DB"));
+        if (namedParameterJdbcTemplate.update(updateSql, new BeanPropertySqlParameterSource(device)) < 1) {
+            throw new EmptyResultDataAccessException(
+                    String.format("Failed to update. '%s' not found in the DB", device), 1);
+        }
     }
 
     private boolean successfullyUpdated(int numRowsUpdated) {
@@ -79,29 +122,21 @@ public class DeviceDaoJdbcImpl implements DeviceDao {
     public void delete(Integer deviceId) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue(DEVICE_ID, deviceId);
-        Optional.of(namedParameterJdbcTemplate.update(DELETE_DEVICE, mapSqlParameterSource))
+        Optional.of(namedParameterJdbcTemplate.update(deleteSql, mapSqlParameterSource))
                 .filter(this::successfullyUpdated)
-                .orElseThrow(() -> new RuntimeException("Error deleting device from DB"));
+                .orElseThrow(() -> new RuntimeException("Failed to delete device from DB"));
     }
 
     @Override
     public List<Device> findAll() {
-        List<Device> devices = namedParameterJdbcTemplate.query(SELECT_ALL, new DeviceRowMapper());
+        List<Device> devices = namedParameterJdbcTemplate.query(findAllSql, new DeviceRowMapper());
         return devices;
-    }
-
-    @Override
-    public List<Device> findByDeviceId(Integer clientId) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource(CLIENT_ID, clientId);
-        List<Device> results = namedParameterJdbcTemplate.query(FIND_BY_CLIENT_ID, namedParameters,
-                BeanPropertyRowMapper.newInstance(Device.class));
-        return results;
     }
 
     @Override
     public Optional<Device> findById(Integer deviceId) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(DEVICE_ID, deviceId);
-        List<Device> results = namedParameterJdbcTemplate.query(FIND_BY_ID, namedParameters,
+        List<Device> results = namedParameterJdbcTemplate.query(findByIdSql, namedParameters,
                 BeanPropertyRowMapper.newInstance(Device.class));
         return Optional.ofNullable(DataAccessUtils.uniqueResult(results));
     }
@@ -112,8 +147,10 @@ public class DeviceDaoJdbcImpl implements DeviceDao {
             Device device = new Device();
             device.setDeviceId(resultSet.getInt("device_id"));
             device.setDeviceName(resultSet.getString("device_name"));
+            device.setParentId(resultSet.getInt("parent_id"));
+            device.setDeviceDate(resultSet.getDate("device_date"));
+            device.setDeviceDescription(resultSet.getNString("device_description"));
             return device;
         }
     }
-
 }
