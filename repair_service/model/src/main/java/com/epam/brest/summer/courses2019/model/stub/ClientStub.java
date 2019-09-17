@@ -1,9 +1,9 @@
-package com.epam.brest.summer.courses2019.model;
+package com.epam.brest.summer.courses2019.model.stub;
 
 /**
  * POJO Client for model.
  */
-public class Client {
+public class ClientStub {
 
     /**
      * Client Id.
@@ -16,9 +16,14 @@ public class Client {
     private String clientName;
 
     /**
+     * Count of Clients Devices.
+     */
+    private Integer countOfDevices;
+
+    /**
      * Constructor without arguments.
      */
-    public Client() {
+    public ClientStub() {
     }
 
     /**
@@ -26,7 +31,7 @@ public class Client {
      *
      * @param clientName client name
      */
-    public Client(String clientName) {
+    public ClientStub(String clientName) {
         this.clientName = clientName;
     }
 
@@ -62,9 +67,27 @@ public class Client {
      *
      * @param clientName Client Name.
      */
-    public Client setClientName(String clientName) {
+    public void setClientName(final String clientName) {
         this.clientName = clientName;
-        return this;
+    }
+
+    /**
+     * Returns <code>Integer</code> representation of countOfDevices
+     * for the Client.
+     *
+     * @return clientId.
+     */
+    public Integer getcountOfDevices() {
+        return countOfDevices;
+    }
+
+    /**
+     * Sets the client's countOfDevices.
+     *
+     * @param countOfDevices count Of Devices.
+     */
+    public void setcountOfDevices(final Integer countOfDevices) {
+        this.countOfDevices = countOfDevices;
     }
 
     /**
@@ -72,9 +95,10 @@ public class Client {
      */
     @Override
     public String toString() {
-        return "Client{"
+        return "ClientStub{"
                 + "clientId=" + clientId
                 + ", clientName='" + clientName + '\''
+                + ", countOfDevices=" + countOfDevices
                 + '}';
     }
 }
