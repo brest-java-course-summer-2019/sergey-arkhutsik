@@ -2,7 +2,13 @@ package com.epam.brest.summer.courses2019.model;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class DeviceTest {
 
@@ -10,6 +16,7 @@ public class DeviceTest {
     private static final String DEVICE_NAME = "deviceName";
     private static final String DEVICE_DESCRIPTION = "deviceDescription";
     private static final Integer PARENT_ID = 1;
+    private static final String DEVICE_DATE = "2019-07-07-00:00:00";
 
     Device device = new Device();
 
@@ -37,4 +44,11 @@ public class DeviceTest {
         assertTrue(device.getDeviceDescription().equals(DEVICE_DESCRIPTION));
     }
 
+    @Test
+    public void getDeviceDate() throws ParseException {
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss", Locale.US);
+        Date date = formatDate.parse(DEVICE_DATE);
+        device.setDeviceDate(date);
+        assertTrue(device.getDeviceDate().equals(date));
+    }
 }

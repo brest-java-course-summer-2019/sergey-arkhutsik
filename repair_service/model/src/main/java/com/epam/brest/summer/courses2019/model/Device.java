@@ -1,5 +1,10 @@
 package com.epam.brest.summer.courses2019.model;
 
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
 /**
  * POJO Device for model.
  */
@@ -21,6 +26,13 @@ public class Device {
     private Integer parentId;
 
     /**
+     * Date of the device.
+     */
+    //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "EEE MMM dd HH:mm:ss z yyyy")
+    private Date deviceDate;
+
+    /**
      * Device Description.
      */
     private String deviceDescription;
@@ -35,11 +47,13 @@ public class Device {
      * Constructor with parameters.
      * @param deviceName - name.
      * @param parentId - client id.
+     * @param deviceDate - date.
      * @param deviceDescription - description.
      */
-    public Device(String deviceName, Integer parentId, String deviceDescription) {
+    public Device(String deviceName, Integer parentId, Date deviceDate, String deviceDescription) {
         this.deviceName = deviceName;
         this.parentId = parentId;
+        this.deviceDate = deviceDate;
         this.deviceDescription = deviceDescription;
     }
 
@@ -92,6 +106,22 @@ public class Device {
     }
 
     /**
+     * Getter for Device Date.
+     * @return device date.
+     */
+    public final Date getDeviceDate() {
+        return deviceDate;
+    }
+
+    /**
+     * Setter for Device Date.
+     * @param deviceDate - date.
+     */
+    public final void setDeviceDate(final Date deviceDate) {
+        this.deviceDate = deviceDate;
+    }
+
+    /**
      * Getter for Device Description.
      * @return device description.
      */
@@ -113,7 +143,34 @@ public class Device {
                 "deviceId=" + deviceId +
                 ", deviceName='" + deviceName + '\'' +
                 ", parentId=" + parentId +
+                ", deviceDate=" + deviceDate +
                 ", deviceDescription='" + deviceDescription + '\'' +
                 '}';
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Device device = (Device) o;
+
+        if (deviceId != device.deviceId) {
+            return false;
+        }
+        return deviceDate != null
+                ? deviceDate.equals(device.deviceDate)
+                : device.deviceDate == null;
+    }
+
+    @Override
+    public final int hashCode() {
+        int result = deviceId;
+        result = 31 * result + (deviceDate != null ? deviceDate.hashCode() : 0);
+        return result;
     }
 }
