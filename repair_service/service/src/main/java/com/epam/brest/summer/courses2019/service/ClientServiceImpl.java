@@ -1,14 +1,17 @@
 package com.epam.brest.summer.courses2019.service;
 
 import com.epam.brest.summer.courses2019.dao.ClientDao;
+import com.epam.brest.summer.courses2019.dao.ClientStubDao;
 import com.epam.brest.summer.courses2019.model.Client;
+
+import java.util.List;
+
+import com.epam.brest.summer.courses2019.model.stub.ClientStub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  *  Client Service Interface implementation.
@@ -22,11 +25,23 @@ public class ClientServiceImpl implements ClientService {
 
     private ClientDao clientDao;
 
+    private ClientStubDao clientStubDao;
+
+    public ClientServiceImpl(ClientDao clientDao, ClientStubDao clientStubDao) {
+        this.clientDao = clientDao;
+        this.clientStubDao = clientStubDao;
+    }
 
     @Override
     public List<Client> findAll() {
         LOGGER.debug("Find all clients");
         return clientDao.findAll();
+    }
+
+    @Override
+    public List<ClientStub> findAllWithDevices() {
+        LOGGER.debug("Find all clients with devices");
+        return clientStubDao.findAllWithDevices();
     }
 
     @Override

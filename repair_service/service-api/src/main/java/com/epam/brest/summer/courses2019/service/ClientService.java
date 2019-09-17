@@ -1,6 +1,7 @@
 package com.epam.brest.summer.courses2019.service;
 
 import com.epam.brest.summer.courses2019.model.Client;
+import com.epam.brest.summer.courses2019.model.stub.ClientStub;
 
 import java.util.List;
 
@@ -15,6 +16,13 @@ public interface ClientService {
      * @return clients .
      */
     List<Client> findAll();
+
+    /**
+     * Get all clients with avg salary by client.
+     *
+     * @return clients list.
+     */
+    List<ClientStub> findAllWithDevices();
 
     /**
      * Find Client By Id.
