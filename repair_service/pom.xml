@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.epam.brest.summer.cources2019</groupId>
-    <artifactId>repair_service</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.epam.brest.summer.courses2019</groupId>
+    <artifactId>repair-service</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Repair Service</name>
+    <name>Aggregator for Repair Service project</name>
+    <url>http://www.example.com</url>
 
     <modules>
         <module>model</module>
         <module>dao</module>
+        <module>dao-api</module>
         <module>service</module>
         <module>web-app</module>
         <module>test-db</module>
         <module>rest-app</module>
-        <module>dao-api</module>
+        <module>service-api</module>
     </modules>
 
     <distributionManagement>
@@ -52,11 +54,12 @@
 
         <checkstyle.version>8.22</checkstyle.version>
         <jacoco.version>0.8.2</jacoco.version>
-        <jacoco.bundle.coveredratio.minimum>65%</jacoco.bundle.coveredratio.minimum>
+        <jacoco.bundle.coveredratio.minimum>0%</jacoco.bundle.coveredratio.minimum>
 
         <org.springframework.version>5.1.8.RELEASE</org.springframework.version>
         <thymeleaf-spring5.version>3.0.11.RELEASE</thymeleaf-spring5.version>
         <jackson-databind.version>2.9.8</jackson-databind.version>
+        <validation-api.version>2.0.1.Final</validation-api.version>
     </properties>
 
     <dependencyManagement>
@@ -68,7 +71,17 @@
             </dependency>
             <dependency>
                 <groupId>com.epam.brest.summer.courses2019</groupId>
+                <artifactId>dao-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest.summer.courses2019</groupId>
                 <artifactId>dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest.summer.courses2019</groupId>
+                <artifactId>service-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -79,16 +92,6 @@
             <dependency>
                 <groupId>com.epam.brest.summer.courses2019</groupId>
                 <artifactId>test-db</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.epam.brest.summer.courses2019</groupId>
-                <artifactId>rest-app</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.epam.brest.summer.courses2019</groupId>
-                <artifactId>web-app</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -160,6 +163,12 @@
                 <artifactId>javax.servlet-api</artifactId>
                 <version>4.0.0</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${validation-api.version}</version>
             </dependency>
 
             <dependency>
@@ -307,7 +316,7 @@
                             <contextPath>/</contextPath>
                         </webApp>
                         <httpConnector>
-                            <port>8080</port>
+                            <port>8090</port>
                         </httpConnector>
                     </configuration>
                 </plugin>
@@ -374,6 +383,9 @@
                                     </limits>
                                 </rule>
                             </rules>
+                            <excludes>
+                                <exclude>com/epam/brest/summer/courses2019/model/**/*</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                     <execution>
@@ -472,6 +484,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
                 <configuration>
+                    <linkXref>true</linkXref>
                     <sourceEncoding>utf-8</sourceEncoding>
                     <minimumTokens>100</minimumTokens>
                 </configuration>
