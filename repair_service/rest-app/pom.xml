@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.epam.brest.summer.cources2019</groupId>
-        <artifactId>repair_service</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-
     <artifactId>rest-app</artifactId>
     <name>Repair Service Rest-APP</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
+
+    <parent>
+        <groupId>com.epam.brest.summer.courses2019</groupId>
+        <artifactId>repair-service</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
 
     <dependencies>
         <dependency>
