@@ -52,8 +52,8 @@ public class ClientController {
     public final String gotoEditClientPage(@PathVariable Integer id, Model model) {
 
         LOGGER.debug("gotoEditClientPage({},{})", id, model);
-        Client client = clientService.findById(id);
-        model.addAttribute("client", client);
+        model.addAttribute("client", clientService.findById(id));
+        model.addAttribute("isNew", false);
         return "client";
     }
 
@@ -64,11 +64,12 @@ public class ClientController {
      */
     @PostMapping(value = "/client/{id}")
     public String updateClient(@Valid Client client,
-                                   BindingResult result) {
-
+                                   BindingResult result,
+                                    Model model) {
         LOGGER.debug("updateClient({}, {})", client, result);
-        clientValidator.validate(client, result);
         if (result.hasErrors()) {
+            model.addAttribute("client", client);
+            model.addAttribute("isNew", false);
             return "client";
         } else {
             this.clientService.update(client);
@@ -83,8 +84,8 @@ public class ClientController {
      */
     @GetMapping(value = "/client")
     public final String gotoAddClientPage(Model model) {
-
         LOGGER.debug("gotoAddClientPage({})", model);
+
         Client client = new Client();
         model.addAttribute("isNew", true);
         model.addAttribute("client", client);
@@ -100,11 +101,12 @@ public class ClientController {
      */
     @PostMapping(value = "/client")
     public String addClient(@Valid Client client,
-                                BindingResult result) {
-
+                                BindingResult result,
+                                Model model) {
         LOGGER.debug("addClient({}, {})", client, result);
-        clientValidator.validate(client, result);
         if (result.hasErrors()) {
+            model.addAttribute("client", client);
+            model.addAttribute("isNew", true);
             return "client";
         } else {
             this.clientService.add(client);

@@ -26,33 +26,38 @@ public class DeviceRestConsumer implements DeviceService {
     }
 
     @Override
-    public List<Device> findAll() {
+    public List<Device> findAll()
+        throws ServerDataAccessException {
         LOGGER.debug("Find all devices");
         ResponseEntity<List> responseEntity = restTemplate.getForEntity(url, List.class);
         return (List<Device>) responseEntity.getBody();
     }
 
     @Override
-    public Device findById(Integer id) {
+    public Device findById(Integer id)
+        throws ServerDataAccessException{
         LOGGER.debug("findById({})", id);
         ResponseEntity<Device> responseEntity1 = restTemplate.getForEntity(url + "/" + id, Device.class);
         return responseEntity1.getBody();
     }
 
     @Override
-    public void update(Device device) {
+    public void update(Device device)
+        throws ServerDataAccessException {
         LOGGER.debug("update({})", device);
         restTemplate.put(url, device);
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id)
+        throws ServerDataAccessException {
         LOGGER.debug("delete({})", id);
         restTemplate.delete(url + "/" + id);
     }
 
     @Override
-    public Device addDevice(Device device) {
+    public Device addDevice(Device device)
+        throws ServerDataAccessException {
         LOGGER.debug("add({})", device);
         ResponseEntity responseEntity = restTemplate.postForEntity(url, device, Device.class);
         Object result = responseEntity.getBody();
@@ -62,7 +67,7 @@ public class DeviceRestConsumer implements DeviceService {
     @Override
     @SuppressWarnings("unchecked")
     public List<Device> filterDeviceByDate(Date fromDate, Date toDate)
-            throws ServerDataAccessException {
+        throws ServerDataAccessException {
         LOGGER.debug("REST-client filterDeviceByDate({} - {})", fromDate, toDate);
         ResponseEntity<List> responseEntity = restTemplate.getForEntity(url + "/" + fromDate + "/" + toDate, List.class);
         LOGGER.debug("REST-client filterDeviceByDate responseEntity({})", responseEntity);
