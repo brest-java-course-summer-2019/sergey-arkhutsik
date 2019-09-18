@@ -16,8 +16,9 @@ Building
      
  Run in a jetty server:
  
-     $ mvn -pl web-app/ jetty:run
-     
+     cd repair_service
+     mvn -pl web-app/ jetty:run
+     cd repair_service
      $ mvn -pl rest-app/ jetty:run
      
  Once started, the application should be available at:
