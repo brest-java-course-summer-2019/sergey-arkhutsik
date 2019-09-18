@@ -49,7 +49,7 @@ public class DeviceController {
      * @return view name
      */
     @GetMapping(value = "/devices")
-    public final String devices(Model model) {
+    public final String devices(Model model) throws Exception {
         LOGGER.debug("findAll({})", model);
         model.addAttribute("devices", deviceService.findAll());
         model.addAttribute("clients", clientService.findAll());
@@ -62,7 +62,7 @@ public class DeviceController {
      * @return view name
      */
     @GetMapping(value = "/device/{id}")
-    public final String gotoEditDevicePage(@PathVariable int id, Model model) {
+    public final String gotoEditDevicePage(@PathVariable int id, Model model) throws Exception {
         LOGGER.debug("gotoEditDevicePage({},{})", id, model);
         model.addAttribute("device", deviceService.findById(id));
         model.addAttribute("clients", clientService.findAll());
@@ -76,7 +76,7 @@ public class DeviceController {
      * @return view name
      */
     @PostMapping(value = "/device/{id}")
-    public String updateDevice(@Valid Device device, BindingResult result, Model model) {
+    public String updateDevice(@Valid Device device, BindingResult result, Model model) throws Exception {
         LOGGER.debug("updateDevice({}, {})", device, result);
         deviceValidator.validate(device, result);
         if (result.hasErrors()) {
@@ -96,7 +96,7 @@ public class DeviceController {
      * @return view name
      */
     @GetMapping(value = "/device")
-    public final String gotoAddDevicePage(Model model) {
+    public final String gotoAddDevicePage(Model model) throws Exception {
         LOGGER.debug("gotoAddDevicePage({})", model);
         Device device = new Device();
         model.addAttribute("clients", clientService.findAll());
@@ -126,7 +126,7 @@ public class DeviceController {
      * @return view name
      */
     @GetMapping(value = "/device/{id}/delete")
-    public final String deleteDeviceById(@PathVariable Integer id, Model model) {
+    public final String deleteDeviceById(@PathVariable Integer id, Model model) throws Exception {
         LOGGER.debug("delete({},{})", id, model);
         deviceService.delete(id);
         return "redirect:/devices";

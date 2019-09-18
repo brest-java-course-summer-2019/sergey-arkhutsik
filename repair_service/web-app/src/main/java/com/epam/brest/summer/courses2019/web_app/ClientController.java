@@ -36,8 +36,8 @@ public class ClientController {
      * @return view name
      */
     @GetMapping(value = "/clients")
-    public final String clients(Model model) {
-
+    public final String clients(Model model)
+            throws Exception {
         LOGGER.debug("findAll({})", model);
         model.addAttribute("clients", clientService.findAllWithDevices());
         return "clients";
@@ -49,7 +49,7 @@ public class ClientController {
      * @return view name
      */
     @GetMapping(value = "/client/{id}")
-    public final String gotoEditClientPage(@PathVariable Integer id, Model model) {
+    public final String gotoEditClientPage(@PathVariable Integer id, Model model) throws Exception {
 
         LOGGER.debug("gotoEditClientPage({},{})", id, model);
         model.addAttribute("client", clientService.findById(id));
@@ -65,7 +65,7 @@ public class ClientController {
     @PostMapping(value = "/client/{id}")
     public String updateClient(@Valid Client client,
                                    BindingResult result,
-                                    Model model) {
+                                    Model model) throws Exception {
         LOGGER.debug("updateClient({}, {})", client, result);
         if (result.hasErrors()) {
             model.addAttribute("client", client);
@@ -83,7 +83,7 @@ public class ClientController {
      * @return view name
      */
     @GetMapping(value = "/client")
-    public final String gotoAddClientPage(Model model) {
+    public final String gotoAddClientPage(Model model) throws Exception {
         LOGGER.debug("gotoAddClientPage({})", model);
 
         Client client = new Client();
@@ -102,8 +102,9 @@ public class ClientController {
     @PostMapping(value = "/client")
     public String addClient(@Valid Client client,
                                 BindingResult result,
-                                Model model) {
+                                Model model) throws Exception  {
         LOGGER.debug("addClient({}, {})", client, result);
+        clientValidator.validate(client, result);
         if (result.hasErrors()) {
             model.addAttribute("client", client);
             model.addAttribute("isNew", true);
@@ -120,7 +121,8 @@ public class ClientController {
      * @return view name
      */
     @GetMapping(value = "/client/{id}/delete")
-    public final String deleteClientById(@PathVariable Integer id, Model model) {
+    public final String deleteClientById(@PathVariable Integer id, Model model)
+            throws Exception {
         LOGGER.debug("delete({},{})", id, model);
         clientService.delete(id);
         return "redirect:/clients";

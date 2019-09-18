@@ -1,6 +1,8 @@
 package com.epam.brest.summer.courses2019.dao;
 
 import com.epam.brest.summer.courses2019.model.Client;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,32 +14,55 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Client DAO Interface implementation.
+ */
 @Component
 public class ClientDaoJdbcImpl implements ClientDao {
 
+    /**
+     * NamedParameterJdbcTemplate.
+     */
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private final static String SELECT_ALL =
-            "select c.client_id, c.client_name from client c order by client_name";
+    /**
+     * SQL query for select all clients.
+     */
+    @Value("${client.findAll}")
+    private String findAllSql;
 
-    private static final String FIND_BY_ID =
-            "select client_id, client_name FROM client where client_id = :clientId";
+    /**
+     * SQL query for select client by id.
+     */
+    @Value("${client.findById}")
+    private String findByIdSql;
 
-    private final static String ADD_CLIENT =
-            "insert into client (client_name) values (:clientName)";
+    /**
+     * SQL query for insert client.
+     */
+    @Value("${client.insert}")
+    private String insertSql;
 
-    private final static String UPDATE_CLIENT =
-            "update client set client_name = :clientName where client_id = :clientId";
+    /**
+     * SQL query for update client.
+     */
+    @Value("${client.update}")
+    private String updateSql;
 
-    private final static String DELETE_CLIENT =
-            "delete from client where client_id = :clientId";
+    /**
+     * SQL query for delete client.
+     */
+    @Value("${client.delete}")
+    private String deleteSql;
 
+    /**
+     * Column name in client table DB.
+     */
     private static final String CLIENT_ID = "clientId";
 
     public ClientDaoJdbcImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -48,17 +73,19 @@ public class ClientDaoJdbcImpl implements ClientDao {
     public Client add(Client client) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("clientName", client.getClientName());
+
         KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(ADD_CLIENT, parameters, generatedKeyHolder);
+        namedParameterJdbcTemplate.update(insertSql, parameters, generatedKeyHolder);
         client.setClientId(generatedKeyHolder.getKey().intValue());
         return client;
     }
 
     @Override
     public void update(Client client) {
-        Optional.of(namedParameterJdbcTemplate.update(UPDATE_CLIENT, new BeanPropertySqlParameterSource(client)))
-                .filter(this::successfullyUpdated)
-                .orElseThrow(() -> new RuntimeException("Error updating client in Database!"));
+        if (namedParameterJdbcTemplate.update(updateSql, new BeanPropertySqlParameterSource(client)) < 1) {
+            throw new EmptyResultDataAccessException(
+                    String.format("Failed to update. '%s' not found in the DB", client), 1);
+        }
     }
 
     private boolean successfullyUpdated(int numRowsUpdated) {
@@ -67,24 +94,23 @@ public class ClientDaoJdbcImpl implements ClientDao {
 
     @Override
     public void delete(Integer clientId) {
-        MapSqlParameterSource deleteParameter = new MapSqlParameterSource();
-        deleteParameter.addValue(CLIENT_ID, clientId);
-        Optional.of(namedParameterJdbcTemplate.update(DELETE_CLIENT, deleteParameter))
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue(CLIENT_ID, clientId);
+        Optional.of(namedParameterJdbcTemplate.update(deleteSql, mapSqlParameterSource))
                 .filter(this::successfullyUpdated)
-                .orElseThrow(() -> new RuntimeException("Error deleting department from Database!"));
+                .orElseThrow(() -> new RuntimeException("Failed to delete client from DB"));
     }
 
     @Override
     public List<Client> findAll() {
-        List<Client> clients =
-                namedParameterJdbcTemplate.query(SELECT_ALL, new ClientRowMapper());
+        List<Client> clients = namedParameterJdbcTemplate.query(findAllSql, new ClientRowMapper());
         return clients;
     }
 
     @Override
     public Optional<Client> findById(Integer clientId) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(CLIENT_ID, clientId);
-        List<Client> results = namedParameterJdbcTemplate.query(FIND_BY_ID, namedParameters,
+        List<Client> results = namedParameterJdbcTemplate.query(findByIdSql, namedParameters,
                 BeanPropertyRowMapper.newInstance(Client.class));
         return Optional.ofNullable(DataAccessUtils.uniqueResult(results));
     }

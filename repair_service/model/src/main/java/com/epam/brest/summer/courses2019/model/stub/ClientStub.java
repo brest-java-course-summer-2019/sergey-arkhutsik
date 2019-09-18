@@ -1,5 +1,8 @@
 package com.epam.brest.summer.courses2019.model.stub;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 /**
  * POJO Client for model.
  */
@@ -13,6 +16,8 @@ public class ClientStub {
     /**
      * Client Name.
      */
+    @NotEmpty(message = "Client name can not be empty.")
+    @Size(min = 1, max = 255, message = "Client name must be between 2 and 50 characters.")
     private String clientName;
 
     /**
