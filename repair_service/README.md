@@ -16,7 +16,9 @@ Building
      
  Run in a jetty server:
  
-     mvn -pl web-app/ jetty:run
+     $ mvn -pl web-app/ jetty:run
+     
+     $ mvn -pl rest-app/ jetty:run
      
  Once started, the application should be available at:
  
