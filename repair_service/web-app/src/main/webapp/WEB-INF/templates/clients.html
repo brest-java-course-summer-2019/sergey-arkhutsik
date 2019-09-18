@@ -96,9 +96,10 @@
                                    data-placement="top"
                                    th:title="#{edit_client}"
                                    th:text="#{edit}">
-                                    <i class="fa fa-pencil"></i> <span
+                                    <i class="fa fa-pencil"></i><span
                                         class="d-none d-md-inline">Edit</span></a>
-                                <span data-toggle="modal"
+                                <span th:if="${client.countOfDevices} == 0"
+                                      data-toggle="modal"
                                       data-target="#deleteDialog"
                                       th:attr="data-id=${client.clientId},data-name=${client.clientName}">
                                 <a href="#" class="btn-sm btn-outline-secondary"
@@ -107,7 +108,16 @@
                                    data-placement="top"
                                    th:title="#{delete_client}"
                                    th:text="#{delete}">
-                                    <i class="fa fa-remove"></i> <span class="d-none d-md-inline">Delete</span></a>
+                                    <i class="fa fa-remove"></i><span class="d-none d-md-inline">Delete</span></a>
+                                </span>
+                                <span th:unless="${client.countOfDevices} == 0">
+                                    <a href="#" class="btn-sm btn-outline-danger"
+                                       title="delete client"
+                                       data-toggle="tooltip"
+                                       data-placement="top"
+                                       th:title="#{cant_delete_client}"
+                                       th:text="#{delete}">
+                                        <span class="d-none d-md-inline">Delete</span></a>
                                 </span>
                             </td>
                         </tr>

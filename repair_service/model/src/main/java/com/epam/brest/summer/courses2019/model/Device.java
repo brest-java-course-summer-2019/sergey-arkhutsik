@@ -3,6 +3,8 @@ package com.epam.brest.summer.courses2019.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -18,11 +20,14 @@ public class Device {
     /**
      * Device Name.
      */
+    @NotEmpty(message = "Device model can not be empty.")
+    @Size(min = 1, max = 255, message = "Device model must be between 2 and 50 characters.")
     private String deviceName;
 
     /**
      * ID of client owning device.
      */
+    @NotEmpty(message = "Select device owner")
     private Integer parentId;
 
     /**
@@ -35,6 +40,8 @@ public class Device {
     /**
      * Device Description.
      */
+    @NotEmpty(message = "Description model can not be empty.")
+    @Size(min = 1, max = 255, message = "Device description must be between 2 and 50 characters.")
     private String deviceDescription;
 
     /**

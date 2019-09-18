@@ -1,5 +1,8 @@
 package com.epam.brest.summer.courses2019.model;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 /**
  * POJO Client for model.
  */
@@ -13,6 +16,8 @@ public class Client {
     /**
      * Client Name.
      */
+    @NotEmpty(message = "Client name can not be empty.")
+    @Size(min = 1, max = 255, message = "Client name must be between 2 and 50 characters.")
     private String clientName;
 
     /**
@@ -76,5 +81,31 @@ public class Client {
                 + "clientId=" + clientId
                 + ", clientName='" + clientName + '\''
                 + '}';
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Client client = (Client) o;
+
+        if (clientId != client.clientId) {
+            return false;
+        }
+        return clientName != null
+                ? clientName.equals(client.clientName)
+                : client.clientName == null;
+    }
+
+    @Override
+    public final int hashCode() {
+        int result = clientId;
+        result = 31 * result + (clientName != null ? clientName.hashCode() : 0);
+        return result;
     }
 }
