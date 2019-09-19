@@ -88,17 +88,16 @@ public class ClientDaoJdbcImpl implements ClientDao {
         }
     }
 
-    private boolean successfullyUpdated(int numRowsUpdated) {
-        return numRowsUpdated > 0;
-    }
-
     @Override
     public void delete(Integer clientId) {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
         mapSqlParameterSource.addValue(CLIENT_ID, clientId);
-        Optional.of(namedParameterJdbcTemplate.update(deleteSql, mapSqlParameterSource))
-                .filter(this::successfullyUpdated)
-                .orElseThrow(() -> new RuntimeException("Failed to delete client from DB"));
+        if (namedParameterJdbcTemplate.update(deleteSql, mapSqlParameterSource) < 1) {
+            throw new RuntimeException("Failed to delete client from DB");
+        }
+//        Optional.of(namedParameterJdbcTemplate.update(deleteSql, mapSqlParameterSource))
+//                .filter(this::successfullyUpdated)
+//                .orElseThrow(() -> new RuntimeException("Failed to delete client from DB"));
     }
 
     @Override
