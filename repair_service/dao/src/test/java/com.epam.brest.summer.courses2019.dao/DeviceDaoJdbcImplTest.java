@@ -106,7 +106,7 @@ public class DeviceDaoJdbcImplTest {
         List<Device> allDevices = deviceDao.findAll();
         assertNotNull(devicesByDateNull);
         assertNotNull(allDevices);
-        assertTrue(devicesByDateNull.size() == allDevices.size());
+        assertEquals(devicesByDateNull.size(), allDevices.size());
     }
 
     @Test
